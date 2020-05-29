@@ -338,42 +338,46 @@ DEFINE <<contraint formula name>> AS
   EVALUATE <<predicate description>>
   ```
   
-  - ```<<contraint formula name>>```: the name of the constraint formula
+  Detailed explanations:
+  
+- ```<<contraint formula name>>```: the name of the constraint formula
   - ```<<context description>>```: the context that is defined in the paper in key-value format.
   - Keys: "Proc", "Act", "Res", "omap", "vmap"
       - "Proc", "Act", "Res": {values}
     - "omap":{Obj:{values}}
       - "vmap":{Attr:{values}}
-- ```<<predicate description>>```: see (*3. Supported constraints*), where the supported predicates are explained with the syntax.
+  - ```<<predicate description>>```: see (*3. Supported constraints*), where the supported predicates are explained with the syntax.
   
   ### 5.3. Action Formula Definition Language
   
     We define action formulas with the action formula definition language. The simplified syntax if as follows:
   
-  ```
+```
     DEFINE <<action formula name>> AS
-  ANALYZE <<analysis description>>
+    ANALYZE <<analysis description>>
     ASSESS <<predicate description>>
     OPERATION <<operation name>>
     PARAMTER <<parameter mapping description>>
   ```
+  
+  Detailed explanations:
   
   - ```<<action formula name>>```: the name of the action formula
   - ```<<analysis description>>```: specifying the constraint instances to analyze in key-value format
     - Keys: "cf", "proc", "act", "res", ObjectClass, AttributeName
       - ObjectClass: the object classes defined in the process (e.g., Order, Item, etc)
       - AttributeName: the attributes defined in the process (e.g., Type,Price, etc)
-      - "cf", "proc", "act", "res", ObjectClass, AttributeName: {values}
+    - "cf", "proc", "act", "res", ObjectClass, AttributeName: {values}
   - ```<<predicate description>>```
-    - ```aggregation,comparator,threshold```
+  - ```aggregation,comparator,threshold```
     - Aggregation includes "count", "ratio", "mean", "median", etc.
-  - Numerical comparator (i.e., <,>,=) is used to assess the necessity of operations.
+    - Numerical comparator (i.e., <,>,=) is used to assess the necessity of operations.
     - Threshold is numerical.
 - ```<<operation name>>```: the name of operation to be executed
   - ```<<parameter mapping description>>```: the mappings of paramters that are required for the execution of the operation in key-value format.
     - "ParameterName": "ParameterValue"
   
-### 5.4. Action Instance Stream Format
+  ### 5.4. Action Instance Stream Format
   
   Below is the schema of an action instance stream.
   
@@ -395,13 +399,13 @@ DEFINE <<contraint formula name>> AS
                         <xs:element name="value" maxOccurs="unbounded">
                       </xs:sequence>
                       <xs:attribute name="name" type="xs:string" use="required"/>
-                    </xs:complexType>
+                  </xs:complexType>
                   </xs:element>
-                </xs:complexType>
+              </xs:complexType>
               </xs:element>
-            <xs:element name="timestamp" type="xs:positiveInteger"/>
+              <xs:element name="timestamp" type="xs:positiveInteger"/>
             </xs:sequence>
-        </xs:complexType>
+          </xs:complexType>
         </xs:element>
     </xs:element>
     </xs:schema>
