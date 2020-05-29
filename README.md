@@ -298,7 +298,7 @@ The figure below shows the overview of the experimental environment.
   <?xml version="1.0" encoding="UTF-8" ?>
   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
-  <xs:element name="event-stream">
+  	<xs:element name="event-stream">
       <xs:element name="event" maxOccurs="unbounded">
         <xs:complexType>
           <xs:sequence>
@@ -322,7 +322,7 @@ The figure below shows the overview of the experimental environment.
           <xs:attribute name="event-id" type="xs:string" use="required"/>
         </xs:complexType>
     </xs:element>
-  </xs:element>
+  	</xs:element>
 </xs:schema>
   ```
 
