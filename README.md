@@ -292,8 +292,10 @@ The figure below shows the overview of the experimental environment.
 
   ### 5.1. Event Stream Format
   
+  Below is the schema of an event stream.
+
   ```
-<?xml version="1.0" encoding="UTF-8" ?>
+  <?xml version="1.0" encoding="UTF-8" ?>
   <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
   <xs:element name="event-stream">
@@ -319,40 +321,42 @@ The figure below shows the overview of the experimental environment.
           </xs:sequence>
           <xs:attribute name="event-id" type="xs:string" use="required"/>
         </xs:complexType>
-      </xs:element>
+    </xs:element>
   </xs:element>
 </xs:schema>
   ```
 
+  
+  
   ### 5.2. Constraint Formula Definition Language
-
+  
   We define constraint formulas with the constraint formula definition language.
   
-  ```
+```
   DEFINE <<contraint formula name>> AS
   CONTEXT <<context description>>
   FILTER <<filter description>>
-EVALUATE <<predicate description>>
+  EVALUATE <<predicate description>>
   ```
   
   - ```<<contraint formula name>>```: the name of the constraint formula
-  - ```<<context description>>```: the context that is defined in the paper in key-value format.
+- ```<<context description>>```: the context that is defined in the paper in key-value format.
     - Keys: "Proc", "Act", "Res", "omap", "vmap"
-      - "Proc", "Act", "Res": {values}
+    - "Proc", "Act", "Res": {values}
       - "omap":{Obj:{values}}
     - "vmap":{Attr:{values}}
   - ```<<predicate description>>```: see (*3. Supported constraints*), where the supported predicates are explained with the syntax.
-
+  
   ### 5.3. Action Formula Definition Language
-
+  
     We define action formulas with the action formula definition language. The simplified syntax if as follows:
   
   ```
-    DEFINE <<action formula name>> AS
+  DEFINE <<action formula name>> AS
     ANALYZE <<analysis description>>
     ASSESS <<predicate description>>
     OPERATION <<operation name>>
-  PARAMTER <<parameter mapping description>>
+    PARAMTER <<parameter mapping description>>
   ```
   
   - ```<<action formula name>>```: the name of the action formula
@@ -363,17 +367,19 @@ EVALUATE <<predicate description>>
       - "cf", "proc", "act", "res", ObjectClass, AttributeName: {values}
   - ```<<predicate description>>```
     - ```aggregation,comparator,threshold```
-    - Aggregation includes "count", "ratio", "mean", "median", etc.
+  - Aggregation includes "count", "ratio", "mean", "median", etc.
     - Numerical comparator (i.e., <,>,=) is used to assess the necessity of operations.
-    - Threshold is numerical.
+  - Threshold is numerical.
   - ```<<operation name>>```: the name of operation to be executed
-- ```<<parameter mapping description>>```: the mappings of paramters that are required for the execution of the operation in key-value format.
+  - ```<<parameter mapping description>>```: the mappings of paramters that are required for the execution of the operation in key-value format.
     - "ParameterName": "ParameterValue"
 
   ### 5.4. Action Instance Stream Format
   
+  Below is the schema of an action instance stream.
+  
   ```
-  <?xml version="1.0" encoding="UTF-8" ?>
+    <?xml version="1.0" encoding="UTF-8" ?>
     <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
   
     <xs:element name="action-instance-stream">
@@ -393,15 +399,17 @@ EVALUATE <<predicate description>>
                     </xs:complexType>
                   </xs:element>
                 </xs:complexType>
-              </xs:element>
+            </xs:element>
               <xs:element name="timestamp" type="xs:positiveInteger"/>
-            </xs:sequence>
+          </xs:sequence>
           </xs:complexType>
         </xs:element>
     </xs:element>
-  </xs:schema>
+    </xs:schema>
   ```
-
+  
+  
+  
   ## Remark
   
   - contact gnpark@pads.rwth-aachen.de for more information
