@@ -1,0 +1,7 @@
+DEFINE "cf1"  AS
+CONTEXT "omap"={"Order":{"foreach"}}
+EVALUATE "Throughput", <, 72; 
+
+DEFINE "cf2"  AS
+CONTEXT "omap"={"Order":{"foreach"}}
+EVALUATE "Existence","check_availability"; 

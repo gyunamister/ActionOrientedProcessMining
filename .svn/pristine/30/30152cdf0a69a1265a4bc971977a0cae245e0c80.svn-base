@@ -1,0 +1,27 @@
+<ivy-module version="2.0">
+    <info organisation="prom" module="ActionOrientedProcessMining" revision="latest">
+    	<description>
+    		Version VERSION
+    	</description>
+    </info>
+    <configurations>
+   		<conf name="default" extends="lib" />
+   		<conf name="lib" />
+	</configurations>  
+    <dependencies defaultconf="default">
+    	<!-- ProM dependencies. -->
+    	<!-- Please put every ProM dependency on a single line. -->
+    	<!-- ProM framework. -->
+    	<dependency org="prom" name="ProM-Plugins" rev="latest" changing="true" transitive="true" />
+    	<!-- ProM packages. -->
+    	<dependency org="prom" name="BasicUtils" rev="latest" changing="true" transitive="true" />
+    	<dependency org="prom" name="Widgets" rev="latest" changing="true" transitive="true" />
+    	<!-- Third party libraries. These may span multiple lines. -->
+    	<!-- Please uncomment the second line in the resolve target in your build.xml file
+    	     if you have any third party libraries. -->
+ 		<!-- Third party library downloaded from maven repository. -->
+    	<!-- dependency conf="lib->default" org="org.reflections" name="reflections" rev="0.9.10" /-->
+    	<!-- Third party library downloaded from ProM library. -->
+    	<!-- dependency conf="lib->default" org="prom-libs" name="opencsv" rev="2.4-patched" transitive="false" /--> 
+    </dependencies>
+</ivy-module>

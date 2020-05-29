@@ -1,0 +1,5 @@
+DEFINE "af1" AS
+VIEW "cf"={"cf1"} & "Order"={"foreach"}
+ASSESS "count",>,0
+OPERATION "Set higher priority"
+PARAMETER "target"="Order";
