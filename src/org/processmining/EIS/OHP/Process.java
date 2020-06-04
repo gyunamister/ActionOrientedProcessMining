@@ -57,22 +57,6 @@ public abstract class Process {
 		omap.put("Package", packageSet);
 		omap.put("Route", routeSet);
 		Event event = new Event(event_id, process, act, res, complete, omap);
-//		List<String> lines = Arrays.asList(event.toString());
-//		if (e == 1) {
-//			Path file = Paths.get("/Users/GYUNAM/Documents/AOPM/src/org/processmining/AOPM/IS_OHP/eventlog.csv");
-//			try {
-//				Files.write(file, lines, StandardCharsets.UTF_8);
-//			} catch (IOException ex) {
-//				System.out.println(ex);
-//			}
-//		} else {
-//			Path file = Paths.get("/Users/GYUNAM/Documents/AOPM/src/org/processmining/AOPM/IS_OHP/eventlog.csv");
-//			try {
-//				Files.write(file, lines, StandardOpenOption.APPEND);
-//			} catch (IOException ex) {
-//				System.out.println(ex);
-//			}
-//		}
 
 		return event;
 	}

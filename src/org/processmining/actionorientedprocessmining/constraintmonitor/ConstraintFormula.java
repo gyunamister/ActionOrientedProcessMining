@@ -91,17 +91,31 @@ public class ConstraintFormula {
 					tempOmap.put(object,tempObjectSet);
 					objectMapCollection.add(tempOmap);
 				}
+			}else if(this.ctxdesc.getOmap().get(object).contains("forall")) {
+				Set<Map<String,Set<String>>> temp = twFtEventSet.stream().map(Event::getOmap).collect(Collectors.toSet());
+				Set<String> objectSet = new HashSet<String>();
+				for(Map<String,Set<String>> omap : temp) {
+					objectSet.addAll(omap.get(object));
+				}
+				Map<String,Set<String>> tempOmap = new LinkedHashMap<String,Set<String>>(); 
+				tempOmap.put(object,objectSet);
+				objectMapCollection.add(tempOmap);
 			}else {
 				objectMapCollection.add(this.ctxdesc.getOmap());
 			}
 		}
+		
 		for(Set<String> p : procSetCollection) {
 			for(Set<String> a:actSetCollection) {
 				for(Set<String> r: resSetCollection) {
-					for(Map<String,Set<String>> o : objectMapCollection) {
-						Map<String,Set<String>> v = new LinkedHashMap<String,Set<String>>();
-						Context ctx = new Context(p,a,r,o,v);
+					if(objectMapCollection.size()==0) {
+						Context ctx = new Context(p,a,r,new LinkedHashMap<String,Set<String>>(),new LinkedHashMap<String,Set<String>>());
 						ctxSet.add(ctx);
+					}else {
+						for(Map<String,Set<String>> o : objectMapCollection) {
+							Context ctx = new Context(p,a,r,o,new LinkedHashMap<String,Set<String>>());
+							ctxSet.add(ctx);
+						}
 					}
 				}
 			}
@@ -109,21 +123,12 @@ public class ConstraintFormula {
 		return ctxSet;
 	}
 	
-//	public Set<Event> filter(Set<Event> eventSet, TimeWindow tw, Context ctx){
-//		Set<Event> ec = new HashSet<Event>();
-//		if(this.filter=="entity") {
-//			ec = this.ft.caseFilter(eventSet, tw, ctx);
-//		}else if(this.filter=="event"){
-//			ec = this.ft.eventFilter(eventSet, tw, ctx);
-//		}
-//		return ec;
-//	}
-	
 	public String eval(Set<Event> eventSet, TimeWindow tw, Context ctx){
 		//We simply assume that we already have predefined functions. So, what we need to is just to call the function.
-		String outcome = "ok"; 
+		String outcome; 
 		
 		String cleanedPredicate = this.predicate.replace("\"", "");
+		cleanedPredicate = cleanedPredicate.replace(" ", "");
 		String [] parsedPredicate = cleanedPredicate.split(",");
 		String funtionName = parsedPredicate[0];
 		if(funtionName.equals("Throughput")) {
@@ -136,7 +141,7 @@ public class ConstraintFormula {
 			outcome = this.evaluator.evalExecution(comp, thres, eventSet, tw, ctx);
 		}else if(funtionName.equals("Existence")) {
 			String targetAct = parsedPredicate[1];
-			outcome = this.evaluator.evalBoundedExistence(targetAct,0, eventSet, tw, ctx);
+			outcome = this.evaluator.evalBoundedExistence(targetAct,1, eventSet, tw, ctx);
 		}else if(funtionName.equals("Non-Existence")) {
 			String targetAct = parsedPredicate[1];
 			outcome = this.evaluator.evalBoundedNonExistence(targetAct,0, eventSet, tw, ctx);
@@ -151,7 +156,7 @@ public class ConstraintFormula {
 		}else if(funtionName.equals("Sequence-Existence")) {
 			String precedingAct = parsedPredicate[1];
 			String targetAct = parsedPredicate[2];
-			outcome = this.evaluator.evalBoundedDependentExistence(precedingAct,targetAct,0,0,eventSet, tw, ctx);
+			outcome = this.evaluator.evalBoundedDependentExistence(precedingAct,targetAct,0,1,eventSet, tw, ctx);
 		}else if(funtionName.equals("Sequence-Non-Existence")) {
 			String precedingAct = parsedPredicate[1];
 			String targetAct = parsedPredicate[2];
@@ -183,8 +188,14 @@ public class ConstraintFormula {
 			String conditionAct = parsedPredicate[2];
 			int numExecution = Integer.valueOf(parsedPredicate[3]);
 			outcome = this.evaluator.evalPrecedence(precedingAct,conditionAct,numExecution,eventSet, tw, ctx);
+		}else if(funtionName.equals("Object-Capacity")) {
+			String oc = parsedPredicate[1];
+			String comp=parsedPredicate[2];
+			int thres=Integer.parseInt(parsedPredicate[3]);
+			outcome = this.evaluator.evalCapacity(oc, comp, thres, eventSet, tw, ctx);
 		}else {
-			System.out.println("Constraint Not Defined");
+			outcome="undefined";
+			System.out.println("At this constraint formula, " + "Constraint Not Defined");
 		}
 		
 		return outcome;

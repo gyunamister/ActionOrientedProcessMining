@@ -70,14 +70,17 @@ public class ActionFormula {
 	
 	public Set<Transaction> genTrans(CubeCell cc){
 		Set<Transaction> trans = new HashSet<Transaction>();
+		Map<String,String> vmap = new LinkedHashMap<String,String>();
 		for(Entry<String, String> param : this.pmap.entrySet()) {
-			for(String v:cc.getValues(this.pmap.get(param.getKey()))) {
-				Map<String,String> vmap = new LinkedHashMap<String,String>();
-				vmap.put(param.getKey(), v);
-				Transaction tr = new Transaction(this.op,vmap);
-				trans.add(tr);
+			if(cc.getElem().keySet().contains(param.getKey())) {
+				String pv = String.join(",", cc.getValues(this.pmap.get(param.getKey())));
+				vmap.put(param.getKey(), pv);
+			}else {
+				vmap.put(param.getKey(), param.getValue());
 			}
 		}
+		Transaction tr = new Transaction(this.op,vmap);
+		trans.add(tr);
 		return trans;
 	}
 	

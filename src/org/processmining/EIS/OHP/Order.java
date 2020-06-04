@@ -31,7 +31,6 @@ public class Order extends ObjectType{
 	
 	public void setPackPrepared(boolean b) { 
 		pack_prepared = b;
-		System.out.println(object_name + " is prepared");
 	}
 		
 }

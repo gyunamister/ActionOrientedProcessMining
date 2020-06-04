@@ -7,7 +7,6 @@ import java.util.Set;
 
 import org.processmining.actionorientedprocessmining.event.TimeMoment;
 import org.processmining.actionorientedprocessmining.event.TimeWindow;
-import org.processmining.actionorientedprocessmining.constraintmonitor.Constraint;
 
 public class CMConfig {
 	Set <Constraint> ConstraintSet;
@@ -23,7 +22,7 @@ public class CMConfig {
 		TM = this.generateTM(offSet, interval, tw);
 		Constraint c = new Constraint(cf,TM);
 		this.ConstraintSet.add(c);
-		System.out.println(c.getCF().cfName + "\n" + TM);
+//		System.out.println(c.getCF().cfName + "\n" + TM);
 	}
 	
 	public List<TimeMoment> generateTM(int offSet, int interval, TimeWindow tw) {

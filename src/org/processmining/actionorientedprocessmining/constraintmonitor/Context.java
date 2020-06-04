@@ -53,7 +53,7 @@ public class Context {
 	public String toString() {
 		String p = this.procSet.toString();
 		String a = this.actSet.toString();
-		String r = this.actSet.toString();
+		String r = this.resSet.toString();
 		String o = this.omap.toString();
 		String v = this.vmap.toString();
 		return p + a + r + o + v;

@@ -26,9 +26,9 @@ public class PackageProcess extends Process {
 	}
 	
 	public void proceedNextActivity() {
-		if(next_act=="pack_items") {
+		if(next_act.equals("pack_items")) {
 			proceedPackItem();
-		}else if(next_act=="store_package") {
+		}else if(next_act.equals("store_package")) {
 			proceedStorePackage();
 		}else {
 			finished = true;

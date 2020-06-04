@@ -1,5 +1,23 @@
-DEFINE "af1" AS
-VIEW "cf"={"cf1"} & "Order"={"foreach"}
+DEFINE "Set-higher-priority-for-delays" AS
+VIEW "cf"={"Delivery-in-72-hours"} & "Order"={"foreach"}
 ASSESS "count",>,0
-OPERATION "Set higher priority"
-PARAMETER "target"="Order";
+OPERATION "Change priority"
+PARAMETER "target"="Order", "change-priority"="1";
+
+DEFINE "Add-resource-for-checking-availability" AS
+VIEW "cf"={"Don't-skip-check-availability"}
+ASSESS "count",>,4
+OPERATION "Add resource"
+PARAMETER "resource-id"="resource-for-check-availability", "target-task"="check_availability";
+
+DEFINE "Send-an-email-to-item-manager" AS
+VIEW "cf"={"Redundant-check-availability"}
+ASSESS "count",>,4
+OPERATION "Send an email"
+PARAMETER "recipient"="item manager", "message"="Redundant availability checks frequently occur";
+
+DEFINE "Reduce-max-capacity-of-orders" AS
+VIEW "cf"={"Maximum-Order-Capacity"}
+ASSESS "count",>,0
+OPERATION "Change maximum capacity"
+PARAMETER "change-rate"="0.01";

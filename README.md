@@ -152,7 +152,7 @@ The gateway parses the resulting AIS file and translate the action instances to 
   - Task addition
 
   ```xml
-  OPERATION "Add a task"
+  OPERATION "Add task"
   PARAMETER "task-id"=<task-identifier>, "preceded-by"=<preceding-task-identifier>,
   "followed-by"=<follwoing-task-id>
   ```
@@ -160,7 +160,7 @@ The gateway parses the resulting AIS file and translate the action instances to 
   - Task elimination
 
   ```xml
-  OPERATION "Eleminate a task"
+  OPERATION "Eleminate task"
   PARAMETER "task-id"=<task-identifier>, "preceded-by"=<preceding-task-identifier>,
   "followed-by"=<follwoing-task-id>
   ```
@@ -168,15 +168,15 @@ The gateway parses the resulting AIS file and translate the action instances to 
   - Change to SPT
 
   ```xml
-  OPERATION "Change the routing rule"
+  OPERATION "Change routing rule"
   PARAMETER "new-routing-rule"=<routing-rule-id>
   ```
 
-  - Set Maximum Capacity
+  - Change maximum capacity
 
   ```xml
-  OPERATION "Set the maximum capacity"
-  PARAMETER "new-capacity"=<capacity-value>
+  OPERATION "Change maximum capacity"
+  PARAMETER "change-rate"=<rate-value>
   ```
 
   - Add resource
@@ -205,8 +205,8 @@ The gateway parses the resulting AIS file and translate the action instances to 
   - Change Priority
 
   ```xml
-  OPERATION "Change the priority"
-  PARAMETER "target"=<object-idenfier>, "new-priority"=<priority-value>
+  OPERATION "Change priority"
+  PARAMETER "target"=<object-idenfier>, "change-priority"=<change-value>
   ```
 
 - **Alert**
@@ -221,7 +221,7 @@ The gateway parses the resulting AIS file and translate the action instances to 
 ### How-to
 
 1. Import CFD and AFD files.
-2. Run _Artificial Information System_ plug-in on ProM framework.
+2. Run _Synthetic Information System_ plug-in on ProM framework.
 3. With that being one of the input, you can initiate the AOPM plug-in. This time, you don't have to configure a filepath for an event stream. This process is done internally.
 4. Configure constraints by selecting a constraint formula and specifying when to monitor it.
 5. Configure actions by selecting an action formula and specifying when to execute it.
@@ -231,6 +231,8 @@ The gateway parses the resulting AIS file and translate the action instances to 
 ## 4. Supported constraints
 
 Below is the list of constraints this plug-in supports. We explain the syntax to be used when defining constraint formulas for each type of constraints.
+
+## Instance-level
 
 #### Control-flow
 
@@ -257,23 +259,23 @@ Below is the list of constraints this plug-in supports. We explain the syntax to
     - ```"Sequence-Existence","place order", "check availability"```
 - **Seqeunce Non-Existence**: Limits the absence of an activity with respect to existence of another activity.
   - Syntax: ```"Seqeunce-Non-existence",condition-activity-id,target-activity-id```
-  - Example: "placeorder" is never directly followed by "check availability".
-    - ```"Seqeunce-Non-Existence","check availability"```
+  - Example: "place order" is never directly followed by "check availability".
+    - ```"Seqeunce-Non-Existence","place order","check availability"```
 
 - **Dependent Existence**: Limits the presence of an activity with respect to existence of another activity.
   - Syntax: ```"Dependent-Existence",condition-activity-id,target-activity-id,sequence-length```
   - Example: "placeorder" is followed by "check availability" eventually in two events.
-    - ```"Dependent-Existence","placeorder", "check availability",2,0```
+    - ```"Dependent-Existence","placeorder", "check availability",2```
 - **Dependent Non-existence**: Limits the absence of an activity with respect to existence of another activity.
-  - Syntax: ```"Dependent Non-Existence" condition-activity-id,target-activity-id,sequence-length,0```
+  - Syntax: ```"Dependent Non-Existence" condition-activity-id,target-activity-id,sequence-length```
   - Example: "placeorder" is never followed by "check availability" eventually in two events.
-    - ```""Dependent Non-Existence","placeorder", "check availability",2,0```
+    - ```""Dependent Non-Existence","placeorder", "check availability",2```
 - **Bounded Dependent Existence**: Limits the number of times an activity must occur with respect to existence of another activity.
   - Syntax: ```"Bounded-Dependent-Existence" condition-activity-id,target-activity-id,sequence-length,num-execution```
   - Example: "placeorder" is followed by "check availability" eventually in two events at least twice.
     - ```"Bounded-Dependent-Existence","placeorder", "check availability",2,2```
 - **Bounded Dependent Non-existence**: Limits the number of times an activity must not occur with respect to existence of another activity.
-  - Syntax: ```"Bounded-Dependent-Non-Existence" activity-id```
+  - Syntax: ```"Bounded-Dependent-Non-Existence" condition-activity-id,target-activity-id,sequence-length,num-execution```
   - Example: "placeorder" is never followed by "check availability" eventually in two events more than twice.
     - ```"Bounded-Dependent-Non-Existence","placeorder", "check availability",2,2```
 - **Precedence**: Limits the occurrence of an activity in precedence over another activity.
@@ -285,8 +287,15 @@ Below is the list of constraints this plug-in supports. We explain the syntax to
 
 - **Throughput**:
   - Syntax: ```"Throughput",comparator,threshould```
-- **Execution**:
-  - Syntax: ```"Execution",activity-id,comparator,threshold```
+
+## Process-level
+
+### Control-flow
+
+- **Object-Capacity**: Limits the upper/lower number of objects in the process
+  - Syntax: ```Object-Capacity, object-id, comparator, threshold```
+  - Example:  The number of ongoing orders in the process must be less than 25.
+    - ```"Object-Capacity", "Order", <, 25```
 
 ## 5. Appendix
 

@@ -30,16 +30,20 @@ public class CubeCell {
 		singleElemTypeSet.add("cf");
 		singleElemTypeSet.add("time");
 		singleElemTypeSet.add("outc");
-		
+
 		for(String d:elem.keySet()) {
 			if(singleElemTypeSet.contains(d)) {
 				if(this.getValues(d).contains(ci.get(d))==false) {
 					return false;
 				}
 			}else {
-				if(this.getValues(d).containsAll(ci.getCtx(d))==false) {
-					return false;
-				};
+				try {
+					if(this.getValues(d).containsAll(ci.getCtx(d))==false) {
+						return false;
+					};
+				}catch(Exception e){
+					continue;
+				}
 			}
 		}
 		return true;

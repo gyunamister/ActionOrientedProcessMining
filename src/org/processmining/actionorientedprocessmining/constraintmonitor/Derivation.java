@@ -52,7 +52,16 @@ public class Derivation {
 			    return sum.doubleValue() / marks.size();
 			  }
 			  return sum;
+		}
+		
+		public double calcProcessCapacity(Set<Event> sublog, String oc) {
+			Set<String> objectSet = new HashSet<String>();
+			
+			for(Event e : sublog) {			
+				objectSet.addAll(e.getOmap().get(oc));
 			}
+			return new Double(objectSet.size());
+		}
 		
 		
 	

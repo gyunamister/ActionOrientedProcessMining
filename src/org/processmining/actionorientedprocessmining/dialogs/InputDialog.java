@@ -215,7 +215,6 @@ public class InputDialog extends JPanel {
 				TimeWindow tw = new TimeWindow(Integer.parseInt(constraintPanel.timeWindow.split(",")[0]), Integer.parseInt(constraintPanel.timeWindow.split(",")[1]));
 				cmConfig.addConstraint(cfMap.get(constraint), constraintPanel.timeOffset, constraintPanel.timeInterval, tw);
 				constrNumber+=1;
-				System.out.println(cmConfig);
 				parameters.updateCMConf(cmConfig);
 			}
 		});
@@ -239,7 +238,6 @@ public class InputDialog extends JPanel {
 				TimeWindow tw = new TimeWindow(Integer.parseInt(actionPanel.timeWindow.split(",")[0]), Integer.parseInt(actionPanel.timeWindow.split(",")[1]));
 				aeConfig.addAction(afMap.get(action), actionPanel.timeOffset, actionPanel.timeInterval, tw);
 				actionNumber+=1;
-				System.out.println(aeConfig);
 				parameters.updateAEConf(aeConfig);
 			}
 		});

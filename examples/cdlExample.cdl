@@ -1,7 +1,15 @@
-DEFINE "cf1"  AS
+DEFINE "Delivery-in-72-hours"  AS
 CONTEXT "omap"={"Order":{"foreach"}}
 EVALUATE "Throughput", <, 72; 
 
-DEFINE "cf2"  AS
-CONTEXT "omap"={"Order":{"foreach"}}
-EVALUATE "Existence","check_availability"; 
+DEFINE "Don't-skip-check-availability"  AS
+CONTEXT "omap"={"Item":{"foreach"}}
+EVALUATE "Sequence-Existence", "check_availability", "pick_item";
+
+DEFINE "Redundant-check-availability"  AS
+CONTEXT "omap"={"Item":{"foreach"}}
+EVALUATE "Bounded-Non-Existence","check_availability", 1;
+
+DEFINE "Maximum-Order-Capacity"  AS
+CONTEXT "Proc"= {"order-handling-process"} & "omap"={"Order":{"forall"}}
+EVALUATE "Object-Capacity", "Order", <, 25;

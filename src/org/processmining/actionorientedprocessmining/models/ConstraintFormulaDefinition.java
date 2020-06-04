@@ -26,7 +26,7 @@ public class ConstraintFormulaDefinition {
 		ParseTreeWalker cdlWalker = new ParseTreeWalker();
 		cdlWalker.walk(cdlListener, cdlTree);
 		this.cfMap = this.gencfMap(this.parsedCFD);
-		System.out.println(this.cfMap);
+//		System.out.println(this.cfMap);
 	}
 	
 	public Map<String, ConstraintFormula> getCfMap(){

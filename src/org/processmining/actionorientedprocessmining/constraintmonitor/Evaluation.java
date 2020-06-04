@@ -16,21 +16,37 @@ public class Evaluation {
 	
 	//Evaluate
 	public String evalRelational(double a, String relation, double b) {
-		String result = "ok";
+		String result;
 		if(relation.equals(">")) {
 			if(a<=b) {
 				result = "nok";
+			}else {
+				result = "ok";
 			}
 		}else if(relation.equals("=")) {
 			if(a!=b) {
 				result = "nok";
+			}else {
+				result = "ok";
 			}
 		}else if(relation.equals("<")) {
 			if(a>=b) {
 				result = "nok";
+			}else {
+				result = "ok";
 			}
+		}else {
+			result="undefined";
+			System.out.println("At this evaluation, " + "given comparator not defined");
 		}
 		return result;
+	}
+	
+	public String evalCapacity(String oc, String comp, int thres, Set<Event> eventSet, TimeWindow tw, Context ctx) {
+		Set<Event> ec = this.ft.eventFilter(eventSet, tw, ctx);
+		double val = this.dv.calcProcessCapacity(ec,oc);
+		String outcome = this.evalRelational(val,comp,thres);
+		return outcome;
 	}
 	
 	public String evalThroughput(String comp, int thres, Set<Event> eventSet, TimeWindow tw, Context ctx) {

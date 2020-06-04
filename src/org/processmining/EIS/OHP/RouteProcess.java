@@ -62,17 +62,17 @@ public class RouteProcess extends Process {
 	}
 	
 	public void proceedNextActivity() {
-		if(next_act=="start_route") {
+		if(next_act.equals("start_route")) {
 			proceedStartRoute();
-		}else if(next_act=="load_package") {
+		}else if(next_act.equals("load_package")) {
 			proceedLoadPackage();
-		}else if(next_act=="deliver_package") {
+		}else if(next_act.equals("deliver_package")) {
 			proceedDeliverPackage();
-		}else if(next_act=="failed_delivery") {
+		}else if(next_act.equals("failed_delivery")) {
 			proceedFailedDelivery();
-		}else if(next_act=="unload_package") {
+		}else if(next_act.equals("unload_package")) {
 			proceedUnloadPackage();
-		}else if(next_act=="end_route") {
+		}else if(next_act.equals("end_route")) {
 			proceedEndRoute();
 		}else {
 			finished = true;

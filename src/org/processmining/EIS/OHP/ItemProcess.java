@@ -1,10 +1,25 @@
 package org.processmining.EIS.OHP;
 
 public class ItemProcess extends Process {
-	public ItemProcess() {
+	double skipProb;
+	double repeatProb;
+	
+	
+	public void setSkipProb(int skipProb) {
+		this.skipProb=skipProb;
+	}
+	
+	public void setRepeatProb(int repeatProb) {
+		this.repeatProb=repeatProb;
+	}
+	
+	public ItemProcess(double skipProb, double repeatProb) {
+		this.skipProb=skipProb;
+		this.repeatProb = repeatProb;
+		
 		current_act = "Start";
 		double random = Math.random();
-		if(random<0.99) {
+		if(random<this.skipProb) {
 			next_act = "check_availability";
 		}else {
 			next_act = "pick_item";
@@ -18,7 +33,12 @@ public class ItemProcess extends Process {
 	
 	public void proceedCheckAvailability() {
 		current_act = "check_availability";
-		next_act = "pick_item";
+		double random = Math.random();
+		if(random<this.repeatProb) {
+			next_act = "pick_item";
+		}else {
+			next_act = "check_availability";
+		}
 		//available_at = available_at + 1;
 				
 	}
@@ -30,9 +50,9 @@ public class ItemProcess extends Process {
 	}
 	
 	public void proceedNextActivity() {
-		if(next_act=="check_availability") {
+		if(next_act.equals("check_availability")) {
 			proceedCheckAvailability();
-		}else if(next_act=="pick_item") {
+		}else if(next_act.equals("pick_item")) {
 			proceedPickItem();
 		}else {
 			finished = true;

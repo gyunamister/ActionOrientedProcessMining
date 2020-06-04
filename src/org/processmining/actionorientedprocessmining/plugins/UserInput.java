@@ -19,7 +19,7 @@ import org.processmining.framework.plugin.PluginContext;
 import org.processmining.framework.plugin.annotations.Plugin;
 import org.processmining.framework.plugin.annotations.PluginVariant;
 
-@Plugin(name = "AOPM", parameterLabels = { "Information System", "Object Centric Log", "Constraint Formula Definition", "Action Formula Definition" },
+@Plugin(name = "ActionOrientedProcessMining", parameterLabels = { "Information System", "Object Centric Log", "Constraint Formula Definition", "Action Formula Definition" },
 	    returnLabels = { "AOPM program" }, returnTypes = { AOPMProgram.class })
 public class UserInput extends AOPMAlgorithm {
 

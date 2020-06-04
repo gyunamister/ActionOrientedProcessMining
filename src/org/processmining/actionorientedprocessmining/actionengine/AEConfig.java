@@ -22,7 +22,7 @@ public class AEConfig {
 		TM = this.generateTM(offSet, interval, tw);
 		Action a = new Action(af,TM);
 		this.ActionSet.add(a);
-		System.out.println(a.getAF().afName + "\n" + TM);
+//		System.out.println(a.getAF().afName + "\n" + TM);
 	}
 	
 	public List<TimeMoment> generateTM(int offSet, int interval, TimeWindow tw) {

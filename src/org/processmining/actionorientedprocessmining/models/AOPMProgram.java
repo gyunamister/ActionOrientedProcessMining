@@ -24,7 +24,7 @@ import org.processmining.actionorientedprocessmining.event.EventStream;
 
 
 public class AOPMProgram implements Runnable{
-	public boolean record =false;
+	public boolean record =true;
 	public OCXMLImporter importer;
 	public String AISdirPath; 
 	public String AISfilePath; 
@@ -53,7 +53,6 @@ public class AOPMProgram implements Runnable{
 	public void run() {
 		synchronized(this) { 
 			for(int i=this.currentTime;i<10000;i++) {
-				System.out.println(this.currentTime);
 				if(this.mode.equals("log")) {
 					simulateWithLog(this.currentTime);
 				}else if(this.mode.equals("information_system")) {
@@ -71,7 +70,7 @@ public class AOPMProgram implements Runnable{
 				this.currentTime=i;
 			}
 		}
-	}
+	} 
 
 	public AOPMProgram(CMConfig cmConfig, AEConfig aeConfig, ObjectCentricLog ocl, String AISdirName){
 		this.mode = "log";

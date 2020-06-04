@@ -60,11 +60,11 @@ public class ConstraintInstance {
 	}
 	
 	public Set<String> projectContext(String d){
-		if(d=="proc") {
+		if(d.equals("proc")) {
 			return this.ctx.getProcSet();
-		}else if(d=="act") {
+		}else if(d.equals("act")) {
 			return this.ctx.getActSet();
-		}else if(d=="res") {
+		}else if(d.equals("res")) {
 			return this.ctx.getResSet();
 		}else {
 			return this.ctx.getOmap().get(d);
@@ -73,6 +73,6 @@ public class ConstraintInstance {
 	
 	public String toString() {
 //		return this.cfName + "," + this.ctx + "," + this.time + "," + this.outc;
-		return this.ctx.getOmap().get("Order").iterator().next() + "," + this.time + "," + this.outc;
+		return this.cfName + "," + this.ctx + "," + this.time + "," + this.outc;
 	}
 }

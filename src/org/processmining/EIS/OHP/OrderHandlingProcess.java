@@ -18,6 +18,9 @@ public class OrderHandlingProcess {
 	public Map<String, List<ObjectType>> object_graph;
 	public List<ObjectType> object_list;
 	public List<ObjectType> ready_object_list;
+	public double itemSkipProb=0.9;
+	public double itemRepeatProb=0.9;
+	public double orderGenProb=0.3;
 
 	public OrderHandlingProcess() {
 		activity_list = new ArrayList<String>();
@@ -46,7 +49,7 @@ public class OrderHandlingProcess {
 		//		double random = Math.random();
 		Random generator = new Random(t*1000);
 		float random = generator.nextFloat();
-		if (random < 0.3) {
+		if (random < orderGenProb) {
 			String order_name = "o" + label;
 			ObjectType o1 = this.initOrder(order_name, t);
 			String graph_name = "g" + label;
@@ -95,7 +98,7 @@ public class OrderHandlingProcess {
 					String graph_name = this.getObjectGraphKey(object_graph, o1);
 					for (int i = 0; i < num_items; i++) {
 						String name = o1.getObjectName() + "-i" + i;
-						Item i1 = new Item(o1, name, t);
+						Item i1 = new Item(o1, name, t, this.itemSkipProb, this.itemRepeatProb);
 						object_graph.get(graph_name).add(i1);
 						temp_items.add(i1);
 					}

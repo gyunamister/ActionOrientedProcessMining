@@ -19,20 +19,43 @@ public class ActionGateway {
 	public void apply(Set<ActionInstance> ais) {
 		for(ActionInstance ai: ais) {
 			String op = ai.getTrans().getOp();
-			if(op=="Set higher priority") {
+			if(op.equals("Change priority")) {
 				String targetObjectName = ai.getTrans().getPmap().get("target");
 				this.changePriority(targetObjectName);
-//				System.out.println(ai.getTime() + " Execute: " + op + " at " + targetObjectName);
 			}
-			else if(op=="Send an email to the case manager") {
+			else if(op.equals("Send an email to the case manager")) {
 				String targetObjectName = ai.getTrans().getPmap().get("target");
 //				System.out.println(ai.getTime() + "Execute: " + op + " at " + targetObjectName);
+			}else if(op.equals("Add resource")) {
+				this.changeItemSkipProb(0.01);
+			}else if(op.equals("Send an email")) {
+				this.changeItemRepeatProb(0.01);
+			}else if(op.equals("Change maximum capacity")) {
+				double reductionRate = Double.valueOf(ai.getTrans().getPmap().get("change-rate"));
+				this.changeOrderGenProb(reductionRate);
 			}
 		}
 	}
 	
+	public void changeItemSkipProb(double skipProb) {
+		this.pSimulator.mp.itemSkipProb+=skipProb;
+	}
 	
-	public void addResource() {
+	public void changeItemRepeatProb(double repeatProb) {
+		this.pSimulator.mp.itemSkipProb+=repeatProb;
+	}
+	
+	public void changeOrderGenProb(double orderGenProb) {
+		this.pSimulator.mp.orderGenProb-=orderGenProb;
+	}
+	
+	
+	public void addResource(String resourceID, String taskName) {
+		Resource r = new Resource(resourceID);
+		r.setTask(taskName, 5);
+	}
+	
+	public void old_addResource() {
 		JFrame f = new JFrame();
 		String resource_info=JOptionPane.showInputDialog(f,"Add resource?");
 		if(resource_info!=null) {

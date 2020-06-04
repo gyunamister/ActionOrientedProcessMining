@@ -33,11 +33,11 @@ public class OrderProcess extends Process {
 	}
 	
 	public void proceedNextActivity() {
-		if(next_act=="place_order") {
+		if(next_act.equals("place_order")) {
 			proceedPlaceOrder();
-		}else if(next_act=="send_invoice") {
+		}else if(next_act.equals("send_invoice")) {
 			proceedSendInvoice();
-		}else if(next_act=="receive_payment") {
+		}else if(next_act.equals("receive_payment")) {
 			proceedReceivePayment();
 		}else {
 			finished = true;

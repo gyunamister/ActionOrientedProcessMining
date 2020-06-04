@@ -13,7 +13,6 @@ public class Resource {
 	public Resource(String name) {
 		this.resource_name = name;
 		this.duration = 1;
-		//this.tasks = t;
 		this.status = "ready_to_assign";
 		this.available_at = 0;
 	}
