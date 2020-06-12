@@ -118,7 +118,9 @@ This plugin takes an **event stream**, a **constraint formula definition**, and 
     </action-instance-stream>
     ```
 
-##2. How to
+
+
+## 2. How to
 
 ### Installation
 
@@ -226,7 +228,7 @@ The gateway parses the resulting AIS file and translate the action instances to 
   PARAMETER "recipient"=<employee-identifier>, "message"=<text>
   ```
 
-### How-to
+### Steps
 
 1. Import CFD and AFD files.
 2. Run _Synthetic Information System_ plug-in on ProM framework.
