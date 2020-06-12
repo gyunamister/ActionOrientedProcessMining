@@ -24,7 +24,7 @@ import org.processmining.actionorientedprocessmining.event.EventStream;
 
 
 public class AOPMProgram implements Runnable{
-	public boolean record =false;
+	public boolean record =true;
 	public OCXMLImporter importer;
 	public String AISdirPath; 
 	public String AISfilePath; 

@@ -120,6 +120,14 @@ This plugin takes an **event stream**, a **constraint formula definition**, and 
 
 ##2. How to
 
+### Installation
+
+- (Using ProM nightly build) Download ProM 6 nightly builds and install the package named *ActionOrientedProcessMining*. Detailed installation instruction available [here](http://promtools.org/doku.php?id=nightly).
+- (Using svn) Checkout project from https://svn.win.tue.nl/repos/prom/Packages/ActionOrientedProcessMining/. Right-click the "ProM with UITopia (Workshop).launch" file and select "RunAs / ProM with UITopia (Workshop)". Detailed steps available [here](https://svn.win.tue.nl/trac/prom/wiki/Contribute).
+- (Using GitHub) clone this project and open the project in any IDE. Right-click the "ProM with UITopia (Workshop).launch" file and select "RunAs / ProM with UITopia (Workshop)".
+
+### Steps
+
 We provide some example files in ```examples/```
 
 1. Import OCL, CFD, AFD files
