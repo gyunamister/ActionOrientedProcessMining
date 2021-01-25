@@ -56,7 +56,7 @@ public abstract class Process {
 		omap.put("Item", itemSet);
 		omap.put("Package", packageSet);
 		omap.put("Route", routeSet);
-		Event event = new Event(event_id, process, act, res, complete, omap);
+		Event event = new Event(event_id, process, act, res, String.valueOf(complete), omap);
 
 		return event;
 	}

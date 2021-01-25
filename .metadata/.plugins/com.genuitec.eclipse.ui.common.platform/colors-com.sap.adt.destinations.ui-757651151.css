@@ -1,0 +1,14 @@
+LogonDataComposite {	  /* workaround for https://bugs.eclipse.org/bugs/show_bug.cgi?id=520364 */
+background-color:#49535a;
+color:#ebedef;
+}
+
+/* use same colors as the Text input fields on the same page */
+LogonDataComposite > StyledText {
+background-color:#49535a;
+color:#d8dcdf;
+}
+
+LogonDataComposite > StyledText[style~='SWT.READ_ONLY'] {
+color:#b3bbc1;
+}

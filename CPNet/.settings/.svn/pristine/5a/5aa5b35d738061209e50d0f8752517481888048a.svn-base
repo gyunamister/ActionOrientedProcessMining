@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+encoding//doc/default.bpmn=UTF-8
+encoding//doc/default.bpmn_diagram=UTF-8
+encoding//src/org/processmining/plugins/plg/gui/LogCollectionViewer.java=UTF-8
+encoding//src/org/processmining/plugins/plg/gui/ProcessGeneratorParameters.java=UTF-8
+encoding//src/org/processmining/timebasedabstraction/visualization/SessionsVisualizer6.java=UTF-8

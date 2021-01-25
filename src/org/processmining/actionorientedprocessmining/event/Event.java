@@ -1,27 +1,34 @@
 package org.processmining.actionorientedprocessmining.event;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
 public class Event {
-	String e;
+	String eventID;
 	String proc;
 	String act;
 	String res;
-	int completeTimestamp;
+	String timestamp;
 	Map<String,Set<String>> omap;
 	
-	public Event(String e, String process, String act, String res, int complete, Map<String,Set<String>> omap) {
-		this.e = e;
+	public Event() {
+		
+	}
+	
+	public Event(String eventID, String process, String act, String res, String complete, Map<String,Set<String>> omap) {
+		this.eventID = eventID;
 		this.proc = process;
 		this.act = act;
 		this.res = res;
 		this.omap = omap;
-		this.completeTimestamp = complete;
+		this.timestamp = complete;
 	}
 	
 	public String getEventID() {
-		return this.e;
+		return this.eventID;
 	}
 	
 	public String getProcess() {
@@ -37,7 +44,19 @@ public class Event {
 	}
 	
 	public int getTimestamp() {
-		return this.completeTimestamp;  
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date theDate;
+		long timestampInMinutes = 0;
+		try {
+			theDate = sdf.parse(this.timestamp);;
+			timestampInMinutes = theDate.getTime() / 60000;
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		int output = Math.toIntExact(timestampInMinutes);
+		
+		return output;  
 	}
 	
 	public Map<String,Set<String>> getOmap() {
@@ -45,6 +64,6 @@ public class Event {
 	}
 	
 	public String toString() {
-		return this.e + ", " + this.proc + ", " + this.act + ", " + this.res + ", " + this.omap + ", " + this.completeTimestamp; 
+		return "Event ID: " + this.eventID + ", \n" + "Process: " + this.proc + ", \n" + "Activity: " + this.act + ", \n" + "Resource: " + this.res + ", \n" + "Omap: " + this.omap + ", \n" + "Timestamp: " + this.timestamp; 
 	}
 }

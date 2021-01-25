@@ -40,7 +40,6 @@ public class ConstraintFormula {
 	public Set<Context> genContextSet(Set<Event> eventSet, TimeWindow tw){
 		Set<Context> ctxSet = new HashSet<Context>();
 		Set<Event> twFtEventSet = eventSet.stream().filter((x) -> (x.getTimestamp() <= tw.getEnd()) && (x.getTimestamp() >= Math.max(0,tw.getStart()))).collect(Collectors.toSet());
-		
 		Set<Set<String>> procSetCollection = new HashSet<Set<String>>();
 		Set<Set<String>> actSetCollection = new HashSet<Set<String>>();
 		Set<Set<String>> resSetCollection = new HashSet<Set<String>>();

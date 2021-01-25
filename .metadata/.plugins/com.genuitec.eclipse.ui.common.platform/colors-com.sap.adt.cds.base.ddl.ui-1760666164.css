@@ -1,0 +1,7 @@
+/* Syntax of CSS key is
+
+
+/* ############################## source viewer for CDS templates ############################## */
+#CdsTemplatesSourceViewer, #AbstractDdlSourceViewer {
+background-color: #373e43; /*same as com.sap.adt.tools.abapsource.ui.abapMethodBackground */
+}

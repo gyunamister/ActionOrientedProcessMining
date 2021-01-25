@@ -3,10 +3,13 @@ package org.processmining.actionorientedprocessmining.Importer;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -42,8 +45,8 @@ public class OCXMLImporter {
 	               Element eElement = (Element) nNode;
 	               String eid = eElement.getAttribute("event-id");
 	               String tempTimestamp = eElement.getElementsByTagName("timestamp").item(0).getTextContent();
-	               int timestamp = Integer.valueOf(tempTimestamp);
-	               if(timestamp!=t) {
+	               String timestamp = tempTimestamp;
+	               if(Integer.valueOf(timestamp)!=t) {
 	            	   continue;
 	               }
 
@@ -73,6 +76,66 @@ public class OCXMLImporter {
 		return eventAtT;
 	}
 	
+	public Set<Event> readOCXML() {
+		Set<Event> eventSet = new HashSet<Event>();
+		try {
+	         File inputFile = new File(this.filePath);
+	         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+	         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+	         Document doc = dBuilder.parse(inputFile);
+	         doc.getDocumentElement().normalize();
+	         NodeList nList = doc.getElementsByTagName("event");
+	         
+	         for (int temp = 0; temp < nList.getLength(); temp++) {
+	            Node nNode = nList.item(temp);
+	            if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+	               Element eElement = (Element) nNode;
+	               String eid = eElement.getAttribute("event-id");
+	               String tempTimestamp = eElement.getElementsByTagName("timestamp").item(0).getTextContent();
+	               String timestamp = tempTimestamp;
+	               String pid = eElement.getElementsByTagName("process-id").item(0).getTextContent();
+
+	               String aid = eElement.getElementsByTagName("activity-id").item(0).getTextContent();
+
+	               String rid = eElement.getElementsByTagName("resource-id").item(0).getTextContent();
+	               Map<String,Set<String>> omap = new LinkedHashMap<String,Set<String>>();
+	               Element tempOmap = (Element) eElement.getElementsByTagName("object-mapping").item(0);
+	               for(int i=0;i<tempOmap.getElementsByTagName("object-class").getLength();i++) {
+	            	   Element oc = (Element) tempOmap.getElementsByTagName("object-class").item(i);
+	            	   String ocName = oc.getAttribute("type");
+	            	   Set<String> objectSet = new HashSet<String>();
+	            	   for(int j=0;j<oc.getElementsByTagName("object-id").getLength();j++) {
+	            		   objectSet.add(oc.getElementsByTagName("object-id").item(j).getTextContent());
+	            	   }
+	            	   omap.put(ocName,objectSet);
+	               }
+	               Event event = new Event(eid,pid,aid,rid,timestamp,omap);
+	               eventSet.add(event);
+	            }
+	         }
+	      } catch (Exception e) {
+	         e.printStackTrace();
+	      }
+		return eventSet;
+	}
+	
+	public Set<Event> getEventsAtT(int t) {
+		Set<Event> eventAtT = new HashSet<Event>();
+		Set<Event> eventSet = this.readOCXML();
+		eventAtT = eventSet.stream().filter(event -> event.getTimestamp()==t).collect(Collectors.toSet());
+		return eventAtT;
+	}
+	
+	public int getTimeOffset() {
+		Set<Event> eventSet = this.readOCXML();
+		Event firstEvent = eventSet
+			      .stream()
+			      .min(Comparator.comparing(Event::getTimestamp))
+			      .orElseThrow(NoSuchElementException::new);
+		int startTime = firstEvent.getTimestamp();
+		return startTime;
+	}
+	
 	public Set<Event> readCSV(int time) {
 		Set<Event> eventAtT = new HashSet<Event>();  
 		try {
@@ -95,7 +158,7 @@ public class OCXMLImporter {
 				}
 				//Read the events at time t
 				if(time==Integer.parseInt(row[4])) {
-					Event event = new Event(row[0], row[1], row[2], row[3], Integer.parseInt(row[4]),omap);
+					Event event = new Event(row[0], row[1], row[2], row[3], row[4],omap);
 					eventAtT.add(event);
 				}
 			}

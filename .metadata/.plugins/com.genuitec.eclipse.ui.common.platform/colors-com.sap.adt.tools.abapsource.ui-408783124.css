@@ -1,0 +1,21 @@
+
+/* Syntax of CSS key is
+
+
+
+
+
+
+/* ############################## source viewer for ABAP templates ############################## */
+#9aa5acpTemplatesSourceViewer {
+background-color: #373e43; /*same as com.sap.adt.tools.abapsource.ui.abapMethodBackground */
+}
+#AdtViewTextPage * {
+background-color: #272c30;
+color: #a0aab1;
+}
+/* Open issues:
+- Header and left side tab-area of ABAP properties sheet has light background. Planned to be fixed in Oxygen service release 1.
+See: https://bugs.eclipse.org/bugs/show_bug.cgi?id=516114
+- Background of editor bread crumb is not dark. This is an eclipse issue. on oxygen this is also visible in JDT.
+*/

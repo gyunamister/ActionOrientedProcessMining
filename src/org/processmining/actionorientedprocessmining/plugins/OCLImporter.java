@@ -10,7 +10,7 @@ import org.processmining.framework.plugin.PluginContext;
 import org.processmining.framework.plugin.annotations.Plugin;
 
 @Plugin(name = "Import Object-Centric Log", parameterLabels = { "Filename" }, returnLabels = { "Object-Centric Log" }, returnTypes = { ObjectCentricLog.class })
-@UIImportPlugin(description = "OCL files", extensions = { "xml" })
+@UIImportPlugin(description = "OCL files", extensions = { "xml", "json" })
 public class OCLImporter extends AbstractImportPlugin {
         protected Object importFromStream(PluginContext context, InputStream input, String filename, long fileSizeInBytes)
                         throws Exception {

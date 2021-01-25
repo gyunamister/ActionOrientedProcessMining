@@ -1,0 +1,3 @@
+DEFINE "An-order-is-changed"  AS
+CONTEXT "omap"={"order":{"foreach"}}
+EVALUATE "Existence", "change_order";

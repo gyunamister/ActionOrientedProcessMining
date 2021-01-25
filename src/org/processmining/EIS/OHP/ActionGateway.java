@@ -77,5 +77,6 @@ public class ActionGateway {
 				oi.initialPriority = 1000;
 			}
 		}
+		System.out.println("CHANGE " + targetObjectName + "to 1000");
 	}
 }

@@ -9,6 +9,7 @@ import java.util.Set;
 import org.processmining.EIS.OHP.ActionGateway;
 import org.processmining.EIS.Simulation.ProcessSimulation;
 import org.processmining.actionorientedprocessmining.Exporter.AISExporter;
+import org.processmining.actionorientedprocessmining.Importer.OCLImporter;
 import org.processmining.actionorientedprocessmining.Importer.OCXMLImporter;
 import org.processmining.actionorientedprocessmining.actionengine.AEConfig;
 import org.processmining.actionorientedprocessmining.actionengine.ActionEngine;
@@ -25,7 +26,8 @@ import org.processmining.actionorientedprocessmining.event.EventStream;
 
 public class AOPMProgram implements Runnable{
 	public boolean record =false;
-	public OCXMLImporter importer;
+	public OCXMLImporter ocxmlImporter;
+	public OCLImporter oclImporter;
 	public String AISdirPath; 
 	public String AISfilePath; 
 	public AISExporter exporter;
@@ -46,15 +48,18 @@ public class AOPMProgram implements Runnable{
 	public String mode;
 	
 	public int currentTime=0;
-	public int e=1;
+	public int timeOffset;
 	public boolean isRestart = false;
 	public boolean isSleep = false;
 
 	public void run() {
 		synchronized(this) { 
 			for(int i=this.currentTime;i<10000;i++) {
-				if(this.mode.equals("log")) {
-					simulateWithLog(this.currentTime);
+				if(this.mode.equals("OCL")) {
+					simulateWithOCL(this.currentTime,this.timeOffset);
+				}
+				else if(this.mode.equals("OCXML")) {
+					simulateWithOCXMLLog(this.currentTime,this.timeOffset);
 				}else if(this.mode.equals("information_system")) {
 					this.simulateWithIS(this.currentTime,record);
 				}else {
@@ -73,7 +78,21 @@ public class AOPMProgram implements Runnable{
 	} 
 
 	public AOPMProgram(CMConfig cmConfig, AEConfig aeConfig, ObjectCentricLog ocl, String AISdirName){
-		this.mode = "log";
+		this.mode = "OCL";
+		if(this.mode.equals("OCL")) {
+			this.oclImporter = new OCLImporter(ocl.getFilePath());
+			this.timeOffset = this.oclImporter.getTimeOffset();
+//			this.currentTime = this.currentTime + this.timeOffset;
+		}
+		else if(this.mode.equals("OCXML")) {
+			this.ocxmlImporter = new OCXMLImporter(ocl.getFilePath());
+			this.timeOffset = this.ocxmlImporter.getTimeOffset();
+//			this.currentTime = this.currentTime + this.timeOffset;
+		}else if(this.mode.equals("information_system")) {
+			this.timeOffset = 0;
+		}else {
+			System.out.println("At " + this +" - undefined mode");
+		}
 		this.ocl = ocl;
 		this.es = new EventStream();
 		this.cm = new ConstraintMonitor(cmConfig);
@@ -82,14 +101,14 @@ public class AOPMProgram implements Runnable{
 		Set<String> defaultProp= new HashSet<String>();
 		Collections.addAll(defaultProp, "cf","proc","act","res","time");
 		Set<String> objectProp= new HashSet<String>();
-		Collections.addAll(objectProp, "Order","Item","Package","Route");
+//		Collections.addAll(objectProp, "Order","Item","Package","Route");
+		Collections.addAll(objectProp, "order","item","delivery_line","delivery");
 		Set<String> attrProp= new HashSet<String>();
 		this.ccs = new ConstraintCubeStructure(this.cs.cis,defaultProp,objectProp,attrProp);
 		this.db = new Dashboard(cmConfig, this.cs);
 		this.ae = new ActionEngine(aeConfig);
 		this.cmConfig = cmConfig;
 		this.aeConfig = aeConfig;
-		this.importer = new OCXMLImporter(ocl.getFilePath());
 		this.AISdirPath = AISdirName;
 		this.AISfilePath = String.format("%s/OH-AIS-%s.xml", this.AISdirPath,new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()));
 		this.exporter = new AISExporter(this.AISfilePath);
@@ -104,7 +123,8 @@ public class AOPMProgram implements Runnable{
 		Set<String> defaultProp= new HashSet<String>();
 		Collections.addAll(defaultProp, "cf","proc","act","res","time");
 		Set<String> objectProp= new HashSet<String>();
-		Collections.addAll(objectProp, "Order","Item","Package","Route");
+//		Collections.addAll(objectProp, "Order","Item","Package","Route");
+		Collections.addAll(objectProp, "order","item","delivery_line","delivery");
 		Set<String> attrProp= new HashSet<String>();
 		this.ccs = new ConstraintCubeStructure(this.cs.cis,defaultProp,objectProp,attrProp);
 		this.db = new Dashboard(cmConfig, this.cs);
@@ -113,18 +133,25 @@ public class AOPMProgram implements Runnable{
 		this.aeConfig = aeConfig;
 		this.pSimulator=pSimulator;
 		this.aGateway = new ActionGateway(pSimulator);
-		this.importer = new OCXMLImporter(pSimulator.filePath);
 		this.AISdirPath = AISdirName;
 		this.AISfilePath = String.format("%s/OH-AIS-%s.xml", this.AISdirPath,new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date()));
 		this.exporter = new AISExporter(this.AISfilePath);
 	}
 	
-	public String toString() {
-		return "AOPM program";
+	public void simulateWithOCL(int t, int offset) {
+		Set<Event> eventsAtT = this.oclImporter.getEventsAtT(t+offset);
+		this.es.setEventSet(eventsAtT);
+		Set<ConstraintInstance> cis = this.cm.monitor(t,this.es);
+		this.cs.addInstances(cis);
+		this.ccs.updateElem(t);
+		this.ccs.updateHier(t);
+		this.db.updateVMap(t);
+		Set<ActionInstance> ais = this.ae.engine(t,this.cs,this.ccs);
+		this.recordAI(ais);
 	}
 
-	public void simulateWithLog(int t) {
-		Set<Event> eventsAtT = this.importer.readOCXML(t);
+	public void simulateWithOCXMLLog(int t, int offset) {
+		Set<Event> eventsAtT = this.ocxmlImporter.getEventsAtT(t+offset);
 		this.es.setEventSet(eventsAtT);
 		Set<ConstraintInstance> cis = this.cm.monitor(t,this.es);
 		this.cs.addInstances(cis);

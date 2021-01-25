@@ -1,0 +1,11 @@
+DEFINE "Send-an-email-to-order-manager" AS
+VIEW "cf"={"Delivery-in-72-hours"} & "Order"={"foreach"}
+ASSESS "count",>,0
+OPERATION "Send an email"
+PARAMETER "recipient"="order manager", "message"="The order needs to be processed as early as possible";
+
+DEFINE "Set-higher-priority-for-delays" AS
+VIEW "cf"={"Delivery-in-72-hours"}
+ASSESS "count",>,5
+OPERATION "Change priority"
+PARAMETER "target"="Order", "change-priority"="1";(INSERT NEW ACTION DEFINTION HERE)

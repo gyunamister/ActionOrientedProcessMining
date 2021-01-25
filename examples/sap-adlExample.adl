@@ -1,0 +1,11 @@
+DEFINE "Assign a case manager for the changed order" AS
+VIEW "cf"={"An-order-is-changed"} & "order"={"foreach"}
+ASSESS "count",>,0
+OPERATION "Send a notification"
+PARAMETER "recipient"="order manager", "message"="Order is changed. Determine if it is valid.";
+
+DEFINE "Add a resource for update-delivery" AS
+VIEW "cf"={"An-order-is-changed"}
+ASSESS "count",>,0
+OPERATION "Add a resource"
+PARAMETER "target"="update-delivery", "role"="pick-item";

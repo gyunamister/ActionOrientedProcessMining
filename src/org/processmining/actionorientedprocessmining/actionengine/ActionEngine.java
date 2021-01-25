@@ -91,29 +91,4 @@ public class ActionEngine {
 			}
 		}
 	}
-
-//	public Set<ConstraintInstance> findViolated(int t, Set<ConstraintInstance> cis, String constr){
-//		Set<ConstraintInstance> violated_instances = new HashSet<ConstraintInstance>();
-//		if(!cis.isEmpty()) {
-//			violated_instances = cis.stream().filter((x) -> "nok"
-//			.equals(x.getoutc())).collect(Collectors.toSet());
-////			Set<String> nok_wo_dup = new HashSet<String>(nok_w_dup);
-////			violated_instances = new HashSet<String>(nok_wo_dup);
-//		}
-//		return violated_instances;
-//	}
-
-//	public Set<String> findNormal(int t, String constr){
-//		Set<String> normal_instances = new HashSet<String>();
-//		Set<ConstraintInstance> cInstanceSet = this.cs.cis.stream()
-//				.filter((x) -> constr.equals(x.getcfName())).collect(Collectors.toSet());
-//		if(!cInstanceSet.isEmpty()) {
-//			Set<String> ok_w_dup = cInstanceSet.stream().filter((x) -> "ok"
-//			.equals(x.getoutc()))
-//					.map(ConstraintInstance::getOrder).collect(Collectors.toSet());
-//			Set<String> ok_wo_dup = new HashSet<String>(ok_w_dup);
-//			normal_instances = new HashSet<String>(ok_wo_dup);
-//		}
-//		return normal_instances;
-//	}
 }
