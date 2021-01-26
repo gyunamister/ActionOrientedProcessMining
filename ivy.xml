@@ -18,6 +18,7 @@
     	<dependency org="prom" name="Widgets" rev="latest" changing="true" transitive="true" />
     	<dependency org="prom" name="Log" rev="latest" changing="true" transitive="true" />
     	<dependency org="com.opencsv" name="opencsv" rev="4.0"/>
+		<dependency org="org.jfree" name="jfreechart" rev="1.5.2"/>
     	<!-- Third party libraries. These may span multiple lines. -->
     	<!-- Please uncomment the second line in the resolve target in your build.xml file
     	     if you have any third party libraries. -->

@@ -60,7 +60,7 @@ public String filePath;
 	}
 	
 	public static void main(String[] arg) {
-		String filePath="/Users/GYUNAM/Documents/SAP/SapExtraction/inputs/eventlog.json";
+		String filePath="/Users/gyunam/Documents/experiments/2020-JoDS/logs/log2.jsonocel";
 		OCLImporter oclImporter = new OCLImporter(filePath);
 		Set<Event> eventSet = oclImporter.readOCL();
 		for(Event event:eventSet) {
